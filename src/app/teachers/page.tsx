@@ -15,10 +15,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
-import { RiEditBoxFill, RiEyeFill } from "react-icons/ri";
-import { MdDelete } from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import { ClipLoader } from "react-spinners";
+import Action from "@/components/Action/Action";
+import { TableTitleTeacher } from "@/components/Teacher/TableTitleTeacher";
+import NotFound from "@/components/NotFound/NotFound";
 
 interface Teacher {
   id: number;
@@ -63,6 +64,8 @@ const Teachers: NextPage = () => {
 
   const pageCount = Math.ceil(teacherData.length / itemsPerPage);
 
+
+
   return (
     <div className="px-6 py-4">
       <div className="flex justify-end">
@@ -78,57 +81,60 @@ const Teachers: NextPage = () => {
             <ClipLoader />
           </div>
         ) : (
-          <Table className="mt-10">
-            <TableCaption>
-              <ReactPaginate
-                previousLabel={"← Previous"}
-                nextLabel={"Next →"}
-                breakLabel={"..."}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageChange}
-                containerClassName={"pagination"}
-                activeClassName={"active"}
-                className="flex justify-center items-center gap-4"
-              />
-            </TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="font-bold bg-sky-100">Name</TableHead>
-                <TableHead className="font-bold bg-sky-100">Subject</TableHead>
-                <TableHead className="font-bold bg-sky-100">Class</TableHead>
-                <TableHead className="font-bold bg-sky-100">
-                  Email Address
-                </TableHead>
-                <TableHead className="font-bold bg-sky-100">Gender</TableHead>
-                <TableHead className="font-bold bg-sky-100">Phone</TableHead>
-                <TableHead className="font-bold bg-sky-100">Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {teacherData
-                .slice(
-                  currentPage * itemsPerPage,
-                  (currentPage + 1) * itemsPerPage
-                )
-                .map((teacher) => (
-                  <TableRow key={teacher.id}>
-                    <TableCell>{teacher.fullName}</TableCell>
-                    <TableCell>{teacher.subject}</TableCell>
-                    <TableCell>{teacher.class}</TableCell>
-                    <TableCell>{teacher.email}</TableCell>
-                    <TableCell>{teacher.gender}</TableCell>
-                    <TableCell>{teacher.phone}</TableCell>
-                    <TableCell className="flex items-center gap-1">
-                      <RiEyeFill className="w-6 h-6 text-blue-500" />
-                      <RiEditBoxFill className="w-6 h-6 text-green-500" />
-                      <MdDelete className="w-6 h-6 text-red-500" />
-                    </TableCell>
+          <>
+            {teacherData.length === 0 ? (
+              <NotFound title="Teacher" />
+            ) : (
+              <Table className="mt-10">
+                <TableCaption>
+                  <ReactPaginate
+                    previousLabel={"← Previous"}
+                    nextLabel={"Next →"}
+                    breakLabel={"..."}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                    containerClassName={"pagination"}
+                    activeClassName={"active"}
+                    className="flex justify-center items-center gap-4"
+                  />
+                </TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    {TableTitleTeacher.map((teacher) => (
+                      <TableHead
+                        className="font-bold bg-sky-100"
+                        key={teacher.id}
+                      >
+                        {teacher.title}
+                      </TableHead>
+                    ))}
                   </TableRow>
-                ))}
-            </TableBody>
-          </Table>
+                </TableHeader>
+                <TableBody>
+                  {teacherData
+                    .slice(
+                      currentPage * itemsPerPage,
+                      (currentPage + 1) * itemsPerPage
+                    )
+                    .map((teacher) => (
+                      <TableRow key={teacher.id}>
+                        <TableCell>{teacher.fullName}</TableCell>
+                        <TableCell>{teacher.subject}</TableCell>
+                        <TableCell>{teacher.class}</TableCell>
+                        <TableCell>{teacher.email}</TableCell>
+                        <TableCell>{teacher.gender}</TableCell>
+                        <TableCell>{teacher.phone}</TableCell>
+                        <TableCell className="flex items-center gap-2">
+                          <Action content="teachers"  id={teacher.id} />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            )}
+          </>
         )}
       </div>
     </div>

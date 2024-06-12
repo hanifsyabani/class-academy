@@ -16,6 +16,7 @@ export default function FormAdd({ content }: { content: string }) {
     subject: "",
     classes: "",
     phone: "",
+    nik: "",
     password: "",
   });
 
@@ -56,6 +57,7 @@ export default function FormAdd({ content }: { content: string }) {
           email: "",
           gender: "",
           subject: "",
+          nik:"",
           classes: "",
           phone: "",
           password: "",
@@ -151,7 +153,7 @@ export default function FormAdd({ content }: { content: string }) {
                 className="w-full px-2 py-3 border border-gray-300 rounded-lg outline-none"
               />
             </div>
-            {content === "teachers" && (
+            {content === "teachers" ? (
               <div className="mb-4">
                 <select
                   name="subject"
@@ -167,6 +169,23 @@ export default function FormAdd({ content }: { content: string }) {
                     </option>
                   ))}
                 </select>
+              </div>
+            ) : (
+              <div className="mb-4">
+                <label
+                  htmlFor="nik"
+                  className="text-sm text-tertiary font-semibold"
+                >
+                  NIK
+                </label>
+                <input
+                  type="text"
+                  name="nik"
+                  id="nik"
+                  value={values.nik}
+                  onChange={handleInput}
+                  className="w-full px-2 py-3 border border-gray-300 rounded-lg outline-none"
+                />
               </div>
             )}
             <div className="flex justify-end">
