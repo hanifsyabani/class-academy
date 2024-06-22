@@ -119,3 +119,36 @@
   }
 }
 
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensure the file input doesn't extend beyond the container */
+}
+
+.text {
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  pointer-events: none; /* Ensure the text doesn't interfere with mouse events */
+}
+
+.container:hover .text {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.container:hover .file-input {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}

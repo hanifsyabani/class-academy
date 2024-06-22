@@ -17,6 +17,8 @@ export async function DELETE(req :Request, {params} : {params: {id: string}}) {
 
     return NextResponse.json({message: "Student deleted", status: 200})
   } catch (error) {
-    
+    if(error instanceof Error){
+      return new Response(error.message, {status: 500})
+    }
   }
 }

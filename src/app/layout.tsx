@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" href="/logo.svg" />
       <body className={inter.className}>
-        <Sidebar />
-        <div className="ml-[20%] w-[80%]">{children}</div>
-        <Toaster />
+        <Providers >
+          <Sidebar />
+          <div className="ml-[20%] w-[80%]">{children}</div>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

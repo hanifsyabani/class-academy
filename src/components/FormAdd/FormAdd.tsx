@@ -6,6 +6,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { BeatLoader } from "react-spinners";
+import { Classes } from "../Utils/Classes";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 export default function FormAdd({ content }: { content: string }) {
   const [values, setValues] = useState({
@@ -18,6 +20,7 @@ export default function FormAdd({ content }: { content: string }) {
     phone: "",
     nik: "",
     password: "",
+    role: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,10 +60,11 @@ export default function FormAdd({ content }: { content: string }) {
           email: "",
           gender: "",
           subject: "",
-          nik:"",
+          nik: "",
           classes: "",
           phone: "",
           password: "",
+          role: "",
         });
 
         router.push(`/${content}`);
@@ -83,7 +87,12 @@ export default function FormAdd({ content }: { content: string }) {
 
   return (
     <div className="px-14 py-4 ">
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <IoArrowBackCircle
+          size={35}
+          className="text-secondary cursor-pointer hover:scale-105 ease-linear duration-300"
+          onClick={() => router.back()}
+        />
         <ButtonsNavbar />
       </div>
       <form className="mt-10 px-3" onSubmit={handleSubmit}>
@@ -192,6 +201,7 @@ export default function FormAdd({ content }: { content: string }) {
               <button
                 className="bg-secondary text-white px-4 py-2 border border-secondary hover:bg-white hover:text-secondary transition-all rounded-xl"
                 type="submit"
+                disabled={isLoading}
               >
                 {isLoading ? (
                   <BeatLoader color="#152259" size={5} />
@@ -212,7 +222,11 @@ export default function FormAdd({ content }: { content: string }) {
                   className="w-full px-2 py-3 outline-none border border-gray-300 rounded-lg"
                 >
                   <option hidden>Class</option>
-                  <option value="1">1</option>
+                  {Classes.map((classs) => (
+                    <option value={classs.class} key={classs.id}>
+                      {classs.class}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="w-full">
@@ -224,8 +238,8 @@ export default function FormAdd({ content }: { content: string }) {
                   className="w-full px-2 py-3 outline-none border border-gray-300 rounded-lg"
                 >
                   <option hidden>Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
             </div>
@@ -246,6 +260,22 @@ export default function FormAdd({ content }: { content: string }) {
                 className="w-full px-2 py-3 border border-gray-300 rounded-lg outline-none"
               />
             </div>
+            {content === "teachers" && (
+              <div className="mb-4">
+                <select
+                  name="role"
+                  id="role"
+                  onChange={handleInput}
+                  value={values.role}
+                  className="w-full px-2 py-3 outline-none border border-gray-300 rounded-lg"
+                >
+                  <option hidden>Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="teachers">Teacher</option>
+                  <option value="students">Student</option>
+                </select>
+              </div>
+            )}
           </div>
         </div>
       </form>

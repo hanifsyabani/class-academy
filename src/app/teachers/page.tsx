@@ -20,6 +20,7 @@ import { ClipLoader } from "react-spinners";
 import Action from "@/components/Action/Action";
 import { TableTitleTeacher } from "@/components/Teacher/TableTitleTeacher";
 import NotFound from "@/components/NotFound/NotFound";
+import Image from "next/image";
 
 interface Teacher {
   id: number;
@@ -29,6 +30,8 @@ interface Teacher {
   email: string;
   gender: string;
   phone: string;
+  image: string;
+  role: string;
 }
 
 const Teachers: NextPage = () => {
@@ -63,8 +66,6 @@ const Teachers: NextPage = () => {
   };
 
   const pageCount = Math.ceil(teacherData.length / itemsPerPage);
-
-
 
   return (
     <div className="px-6 py-4">
@@ -120,15 +121,36 @@ const Teachers: NextPage = () => {
                     )
                     .map((teacher) => (
                       <TableRow key={teacher.id}>
-                        <TableCell>{teacher.fullName}</TableCell>
-                        <TableCell>{teacher.subject}</TableCell>
-                        <TableCell>{teacher.class}</TableCell>
-                        <TableCell>{teacher.email}</TableCell>
-                        <TableCell>{teacher.gender}</TableCell>
-                        <TableCell>{teacher.phone}</TableCell>
-                        <TableCell className="flex items-center gap-2">
-                          <Action content="teachers"  id={teacher.id} />
-                        </TableCell>
+                        {teacher.role === "teachers" && (
+                          <>
+                            <TableCell className="flex items-center gap-1">
+                              {teacher.image && (
+                                <div className="w-8 h-8 rounded-full">
+                                  <Image
+                                    src={teacher.image}
+                                    width={50}
+                                    height={50}
+                                    alt="poto"
+                                    className="w-full h-full rounded-full"
+                                  />
+                                </div>
+                              )}
+                              {teacher.fullName}
+                            </TableCell>
+                            <TableCell>{teacher.subject}</TableCell>
+                            <TableCell>{teacher.class}</TableCell>
+                            <TableCell>{teacher.email}</TableCell>
+                            <TableCell>{teacher.gender}</TableCell>
+                            <TableCell>{teacher.phone}</TableCell>
+                            <TableCell className="flex items-center gap-2">
+                              <Action
+                                content="teachers"
+                                id={teacher.id}
+                                data={teacher}
+                              />
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))}
                 </TableBody>

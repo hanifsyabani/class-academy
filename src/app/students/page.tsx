@@ -18,8 +18,6 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
-import { MdDelete } from "react-icons/md";
-import { RiEditBoxFill, RiEyeFill } from "react-icons/ri";
 import ReactPaginate from "react-paginate";
 import { ClipLoader } from "react-spinners";
 
@@ -128,7 +126,7 @@ const Students: NextPage = () => {
                         <TableCell>{stundent.gender}</TableCell>
                         <TableCell>{stundent.phone}</TableCell>
                         <TableCell className="flex items-center gap-2">
-                          <Action content="students" id={stundent.id}/>
+                          <Action content="students" id={stundent.id} data={stundent}/>
                         </TableCell>
                       </TableRow>
                     ))}
