@@ -132,6 +132,7 @@ const Teachers: NextPage = () => {
                                     height={50}
                                     alt="poto"
                                     className="w-full h-full rounded-full"
+                                    loading="lazy"
                                   />
                                 </div>
                               )}

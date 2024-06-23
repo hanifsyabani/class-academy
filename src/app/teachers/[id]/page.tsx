@@ -125,6 +125,7 @@ export default function TeacherId() {
                     width={300}
                     height={300}
                     className="w-full h-full rounded-full"
+                    loading="lazy"
                   />
                 </div>
               ) : (
@@ -137,6 +138,7 @@ export default function TeacherId() {
                         width={300}
                         height={300}
                         className="w-full h-full rounded-full"
+                        loading="lazy"
                       />
                     </div>
                   ) : (

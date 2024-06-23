@@ -78,7 +78,7 @@ export default function FormAdd({ content }: { content: string }) {
     } catch (error) {
       toast({
         title: `Error ${error}`,
-        description: "Something went wrong",
+        description: error instanceof Error ? error.message : "",
       });
     } finally {
       setIsLoading(false);

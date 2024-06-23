@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Class Academy",
@@ -20,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <link rel="icon" href="/logo.svg" />
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <Providers >
           <Sidebar />
           <div className="ml-[20%] w-[80%]">{children}</div>

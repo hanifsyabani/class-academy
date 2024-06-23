@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 
 export default function Sidebar() {
   const { data: session }: { data: any } = useSession();
-  // console.log(session);
+  console.log(session);
   const text = "Welcome";
   return (
     <>
@@ -29,7 +29,14 @@ export default function Sidebar() {
 
           <div className="py-4 px-7">
             {SidebarItem.map((item) => (
-              <Link href={item.link} key={item.id}>
+              <Link
+                href={`${
+                  session?.user?.role === "teachers" && item.id === 2
+                    ? `/teachers/${session?.user?.id}`
+                    : item.link
+                }`}
+                key={item.id}
+              >
                 <div className="flex items-center  gap-5 mb-4 text-white hover:bg-secondary p-2 rounded-lg cursor-pointer">
                   {item.id === 1 ? (
                     <RxDashboard className="text-xl" />

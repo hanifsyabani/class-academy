@@ -2,8 +2,6 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function SubNav({
   title,
@@ -13,17 +11,7 @@ export default function SubNav({
   link: string;
 }) {
 
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  // console.log(session?.user?.role)
-  
-  useEffect(() => {
-    if (status === "unauthenticated" ) {
-      router.push("/login");
-    }
-  }, [status]);
-
-  // if(!session?.user.role) return null
+  const { data: session} :{data:any} = useSession();
 
   return (
     <div className="flex justify-between items-center mt-6">

@@ -2,15 +2,18 @@
 
 import { toast } from "@/components/ui/use-toast";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { FcGoogle } from "react-icons/fc";
 
-export default function Login() {
+export default function Login({searchParams}: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const callbackUrl = searchParams.callbackUrl || "/";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +26,7 @@ export default function Login() {
         callbackUrl: "/",
       });
       if (res?.ok) {
-        router.push("/");
+        router.push(callbackUrl);
       } else {
         toast({
           title: "please check your credentials",
@@ -33,7 +36,29 @@ export default function Login() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Something went wrong",
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    setIsLoading(true);
+    try {
+      const res = await signIn("google", { redirect: false, callbackUrl });
+      if (!res?.ok) {
+        toast({
+          title: "Google Sign-In failed",
+          description: "Please try again",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
       });
     } finally {
       setIsLoading(false);
@@ -41,7 +66,7 @@ export default function Login() {
   }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
+      <div className="w-full max-w-lg p-10 space-y-8 bg-white rounded shadow-lg">
         <h2 className="text-2xl font-bold text-center">Login</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
@@ -89,7 +114,16 @@ export default function Login() {
               {isLoading ? <ClipLoader size={20} color="white" /> : "Sign in"}
             </button>
           </div>
+          <hr className="border-1 border-tertiary" />
         </form>
+        <button
+          className="flex items-center justify-center gap-3 bg-gray-200 w-1/2 p-2  rounded-lg mx-auto cursor-pointer hover:bg-gray-300 transition-all"
+          type="button"
+          onClick={handleGoogleSignIn}
+        >
+          <FcGoogle size={30} />
+          <p className="text-center">Sign in with Google</p>
+        </button>
       </div>
     </div>
   );
