@@ -23,21 +23,25 @@ export const adminFeatures = [
     id: 1,
     fitur: "Add other admins",
     iconKey: 'admin',
+    link : '/admin'
   },
   {
     id: 2,
     fitur: "Add Teacher",
     iconKey: 'student',
+    link : '/teachers/formAddTeacher'
   },
   {
     id: 3,
     fitur: "Add Student",
     iconKey: 'teacher',
+    link : '/students/formAddStudent'
   },
   {
     id: 4,
     fitur: "Add classes",
     iconKey: 'class',
+    link : '/classes/formAddClass'
   },
 ];
 

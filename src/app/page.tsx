@@ -8,11 +8,18 @@ import { TiSupport } from "react-icons/ti";
 import ButtonsNavbar from "@/components/Navbar/ButtonsNavbar";
 import { useSession } from "next-auth/react";
 import moment from "moment";
+import Link from "next/link";
+import BarChart from "@/components/Chart/BarChar";
+import { FaChartBar } from "react-icons/fa";
+import PieChart from "@/components/Chart/Piechart";
+
 
 interface Feature {
   id: number;
   fitur: string;
   desc?: string;
+  iconKey?: string;
+  link?: string;
 }
 
 export default function Home() {
@@ -23,20 +30,20 @@ export default function Home() {
   const renderIcon = (id: number) => {
     switch (id) {
       case 1:
-        return <RiAdminFill size={45} className="text-primary" />;
+        return <RiAdminFill size={30} className="text-primary" />;
       case 2:
-        return <PiChalkboardTeacher size={45} className="text-primary" />;
+        return <PiChalkboardTeacher size={30} className="text-primary" />;
       case 3:
-        return <PiStudentFill size={45} className="text-primary" />;
+        return <PiStudentFill size={30} className="text-primary" />;
       case 4:
-        return <SiGoogleclassroom size={45} className="text-primary" />;
+        return <SiGoogleclassroom size={30} className="text-primary" />;
       default:
         return null;
     }
   };
 
   return (
-    <div className="px-14 py-4">
+    <div className="px-5 py-4">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="font-bold">Dashboard</h1>
@@ -83,21 +90,39 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="flex justify-center items-center mt-10 gap-10">
-              {adminFeatures.map((feature: Feature) => (
-                <div
-                  key={feature.id}
-                  className="bg-gray-200 hover:bg-secondary cursor-pointer w-56 flex flex-col justify-center items-center gap-4 p-4 rounded-lg group"
-                >
-                  <div className="bg-gray-300 p-2 rounded-full flex items-center justify-center">
-                    {renderIcon(feature.id)}
-                  </div>
-                  <h1 className="font-semibold group-hover:text-white">
-                    {feature.fitur}
-                  </h1>
+            <>
+              <div className="flex justify-center items-center mt-10 gap-7 flex-wrap">
+                {adminFeatures.map((feature: Feature) => (
+                  <Link href={`${feature.link}`} key={feature.id}>
+                    <div className="bg-gray-200 hover:bg-secondary cursor-pointer w-52 flex flex-col justify-center items-center gap-4 p-4 rounded-lg group">
+                      <div className="bg-gray-300 p-2 rounded-full flex items-center justify-center">
+                        {renderIcon(feature.id)}
+                      </div>
+                      <h1 className="font-semibold group-hover:text-white">
+                        {feature.fitur}
+                      </h1>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-20 ">
+                <div className="flex items-center gap-4">
+                  <FaChartBar size={30} className="text-primary" />
+                  <h1 className="font-semibold text-primary">Statistics Class Academy</h1>
                 </div>
-              ))}
-            </div>
+                <div className="w-full flex justify-center gap-8 mt-10">
+                  <div className="w-1/2">
+                    <h2 className="font-semibold text-center text-primary mb-4">Grafik Role</h2>
+                    <BarChart />
+                  </div>
+                  <div className="w-1/3">
+                    <h2 className="font-semibold text-center text-primary mb-4">Grafik Student Gender</h2>
+                    <PieChart/>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
