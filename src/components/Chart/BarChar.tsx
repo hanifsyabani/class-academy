@@ -1,38 +1,63 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+"use client";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-const BarChart = () => {
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const BarChart = ({
+  data1,
+  data2,
+  data3,
+  title1,
+  title2,
+  title3,
+}: {
+  data1: any;
+  data2: any;
+  data3?: any;
+  title1: string;
+  title2: string;
+  title3?: string;
+}) => {
   const data = {
-    labels: ['Teachers', 'Students'],
+    labels: [title1, title2, title3],
     datasets: [
       {
-        label: '# of Votes',
-        data: [12, 90],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-        ],
+        label: "# of Votes",
+        data: [data1, data2, data3],
+        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)"],
+        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)"],
         borderWidth: 1,
       },
     ],
   };
 
-  const options :any = {
+  const options: any = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "bottom",
       },
       title: {
         display: true,
-        text: 'Chart.js Bar Chart',
+        text: "Class Academy",
       },
     },
   };

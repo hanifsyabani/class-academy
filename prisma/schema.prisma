@@ -28,10 +28,11 @@ model Teacher {
   about String?
   age String?
   role String?
+  student Student[]
 }
 
 model Student {
-   id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   fullName String
   email String
   class String
@@ -39,5 +40,8 @@ model Student {
   nik String
   password String
   phone String
+  role String?
   Designation String?
+  teacherId Int?
+  teacher Teacher? @relation(fields: [teacherId], references: [id])
 }

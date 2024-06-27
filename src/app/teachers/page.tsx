@@ -21,6 +21,7 @@ import Action from "@/components/Action/Action";
 import { TableTitleTeacher } from "@/components/Teacher/TableTitleTeacher";
 import NotFound from "@/components/NotFound/NotFound";
 import Image from "next/image";
+import Header from "@/components/Header/Header";
 
 interface Teacher {
   id: number;
@@ -69,12 +70,10 @@ const Teachers: NextPage = () => {
 
   return (
     <div className="px-6 py-4">
-      <div className="flex justify-end">
-        <ButtonsNavbar />
-      </div>
+      <Header title="List of Teachers" />
 
       <div>
-        <SubNav title="Teachers" link="/teachers/formAddTeacher" />
+        <SubNav title="All Teachers" link="/teachers/formAddTeacher" dataset={teacherData} />
         <Search placeholder="Search for a teacher by name or email" />
 
         {isLoading ? (

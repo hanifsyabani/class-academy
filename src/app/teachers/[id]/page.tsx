@@ -109,7 +109,7 @@ export default function TeacherId() {
                 onClick={() => router.back()}
               />
               <h1 className="text-xl font-bold text-tertiary">
-                {teacherData.fullName}
+                Profile
               </h1>
             </div>
             <NavbarId />

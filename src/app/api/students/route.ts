@@ -37,7 +37,7 @@ export async function GET(){
 
     const student = await prisma.student.findMany();
 
-    if(!student) return NextResponse.json({message: "No teacher found"}, {status: 500});
+    if(!student) return NextResponse.json({message: "No Students found"}, {status: 500});
 
     return NextResponse.json(student,{status: 200})
   } catch (error) {

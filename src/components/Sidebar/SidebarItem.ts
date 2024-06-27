@@ -11,7 +11,7 @@ export const SidebarItem =[
   },
   {
     id:3,
-    title: 'Students/classes',  
+    title: 'Students',  
     link: '/students'
   },
   {

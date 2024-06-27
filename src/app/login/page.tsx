@@ -28,9 +28,10 @@ export default function Login({searchParams}: any) {
       if (res?.ok) {
         router.push(callbackUrl);
       } else {
+       
         toast({
           title: "please check your credentials",
-          description: "Check your email and password",
+          description: res?.error,
         });
       }
     } catch (error) {
@@ -44,26 +45,7 @@ export default function Login({searchParams}: any) {
     }
   }
 
-  async function handleGoogleSignIn() {
-    setIsLoading(true);
-    try {
-      const res = await signIn("google", { redirect: false, callbackUrl });
-      if (!res?.ok) {
-        toast({
-          title: "Google Sign-In failed",
-          description: "Please try again",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Something went wrong",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
+ 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-lg p-10 space-y-8 bg-white rounded shadow-lg">
@@ -119,7 +101,7 @@ export default function Login({searchParams}: any) {
         <button
           className="flex items-center justify-center gap-3 bg-gray-200 w-1/2 p-2  rounded-lg mx-auto cursor-pointer hover:bg-gray-300 transition-all"
           type="button"
-          onClick={handleGoogleSignIn}
+          onClick={() => signIn("google", { callbackUrl, redirect: false })}
         >
           <FcGoogle size={30} />
           <p className="text-center">Sign in with Google</p>

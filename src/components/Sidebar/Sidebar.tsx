@@ -8,11 +8,32 @@ import { PiStudentBold, PiExam } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const { data: session }: { data: any } = useSession();
-  console.log(session);
+  const pathname = usePathname();
   const text = "Welcome";
+
+  const renderIcon = (id: number) => {
+    switch (id) {
+      case 1:
+        return <RxDashboard size={25} />;
+      case 2:
+        return <FaChalkboardTeacher size={25} />;
+      case 3:
+        return <PiStudentBold size={25} />;
+      case 4:
+        return <FaRegCalendarAlt size={25} />;
+      case 5:
+        return <PiExam size={25} />;
+      case 6:
+        return <IoSettingsOutline size={25} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       {session ? (
@@ -37,20 +58,12 @@ export default function Sidebar() {
                 }`}
                 key={item.id}
               >
-                <div className="flex items-center  gap-5 mb-4 text-white hover:bg-secondary p-2 rounded-lg cursor-pointer">
-                  {item.id === 1 ? (
-                    <RxDashboard className="text-xl" />
-                  ) : item.id === 2 ? (
-                    <FaChalkboardTeacher className="text-xl" />
-                  ) : item.id === 3 ? (
-                    <PiStudentBold className="text-xl" />
-                  ) : item.id === 4 ? (
-                    <FaRegCalendarAlt className="text-xl" />
-                  ) : item.id === 5 ? (
-                    <PiExam className="text-xl" />
-                  ) : item.id === 6 ? (
-                    <IoSettingsOutline className="text-xl" />
-                  ) : null}
+                <div
+                  className={`flex items-center  gap-5 mb-4 text-white hover:bg-secondary p-2 rounded-lg cursor-pointer ${
+                    pathname === item.link ? "bg-secondary" : ""
+                  }`}
+                >
+                  {renderIcon(item.id)}
 
                   {session?.user?.role === "teachers" && item.id === 2 ? (
                     <h3>Profile</h3>

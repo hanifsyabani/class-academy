@@ -1,143 +1,136 @@
 "use client";
 
-import Action from "@/components/Action/Action";
+import BarChart from "@/components/Chart/BarChar";
 import ButtonsNavbar from "@/components/Navbar/ButtonsNavbar";
-import SubNav from "@/components/Navbar/SubNav";
-import NotFound from "@/components/NotFound/NotFound";
-import Search from "@/components/Search/Search";
-import { TableTitle } from "@/components/Students/TableTitle";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { ClassList } from "@/components/Utils/Classes";
 import { toast } from "@/components/ui/use-toast";
-import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
-import { ClipLoader } from "react-spinners";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { PiStudentFill } from "react-icons/pi";
+import { FaDatabase } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+import ListStudents from "@/components/Students/ListStudents";
+import Search from "@/components/Search/Search";
+import SubNav from "@/components/Navbar/SubNav";
+import { CSVLink } from "react-csv";
+import Header from "@/components/Header/Header";
 
 interface Students {
-  id: number;
-  fullName: string;
-  nik: string;
-  class: string;
-  email: string;
-  gender: string;
-  phone: string;
+  class10: any;
+  class11: any;
+  class12: any;
 }
 
-const Students: NextPage = () => {
-  const [studentData, setStudentData] = useState<Students[]>([]);
+interface StudentData {
+  id: number;
+  fullName: string;
+  email: string;
+  class: string;
+  gender: string;
+  nik: string;
+  phone: string;
+  Designation: string | null;
+}
+export default function Students() {
+  const [dataClass, setDataClass] = useState({} as Students);
+  const [dataStudent, setDataStudent] = useState<StudentData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session }: { data: any } = useSession();
 
   useEffect(() => {
-    async function getStudents() {
+    async function getData() {
       setIsLoading(true);
-      const res = await fetch("/api/students");
-      const data = await res.json();
-      if (data) {
-        setStudentData(data);
-      } else {
+      try {
+        const res = await fetch("/api/students/classes");
+        const data = await res.json();
+        setDataClass(data);
+
+        const studentsRes = await fetch(`/api/students/byClass/${session?.user?.id}`);
+        const student = await studentsRes.json();
+        if (Array.isArray(student)) {
+          setDataStudent(student);
+        } else {
+          setDataStudent([]);
+        }
+      } catch (error) {
         toast({
           title: "Error",
-          description: "Something went wrong",
-          color: "red",
+          description: "Failed Load Data",
         });
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     }
 
-    getStudents();
-  }, [currentPage]);
-
+    getData();
+  }, [session?.user?.id]);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
 
-  const pageCount = Math.ceil(studentData.length / itemsPerPage);
+  const pageCount = Math.ceil(dataStudent.length / itemsPerPage);
+
+  const class10 = dataClass.class10 ? dataClass.class10.length : null;
+  const class11 = dataClass.class11 ? dataClass.class11.length : null;
+  const class12 = dataClass.class12 ? dataClass.class12.length : null;
 
   return (
-    <div className="px-6 py-4">
-      <div className="flex justify-between">
-        <h1 className="text-2xl font-extrabold text-tertiary">Dashboard</h1>
-        <ButtonsNavbar />
-      </div>
-
-      <hr className="border border-gray-200 mt-2" />
-
-      <div>
-        <SubNav title="Students" link="/students/formAddStudent" />
-        <Search placeholder="Search for a student by name or email" />
-
-        {isLoading ? (
-          <div className="flex justify-center items-center min-h-screen">
-            <ClipLoader />
+    <div className=" py-5">
+      {session?.user?.role === "admin" ? (
+        <>
+          <div className="flex justify-between items-center px-5">
+            <div className="flex items-center gap-2">
+              <PiStudentFill size={20} className="text-primary" />
+              <h1 className="font-bold text-primary">Select Classes</h1>
+            </div>
+            <ButtonsNavbar />
           </div>
-        ) : (
-          <>
-            {studentData.length === 0 ? (
-              <NotFound title="Student" />
-            ) : (
-              <Table className="mt-10">
-                <TableCaption>
-                  <ReactPaginate
-                    previousLabel={"← Previous"}
-                    nextLabel={"Next →"}
-                    breakLabel={"..."}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageChange}
-                    containerClassName={"pagination"}
-                    activeClassName={"active"}
-                    className="flex justify-center items-center gap-4"
-                  />
-                </TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    {TableTitle.map((item) => (
-                      <TableHead key={item.id} className="font-bold bg-sky-100">
-                        {item.title}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {studentData
-                    .slice(
-                      currentPage * itemsPerPage,
-                      (currentPage + 1) * itemsPerPage
-                    )
-                    .map((stundent) => (
-                      <TableRow key={stundent.id}>
-                        <TableCell>{stundent.fullName}</TableCell>
-                        <TableCell>{stundent.class}</TableCell>
-                        <TableCell>{stundent.email}</TableCell>
-                        <TableCell>{stundent.nik}</TableCell>
-                        <TableCell>{stundent.gender}</TableCell>
-                        <TableCell>{stundent.phone}</TableCell>
-                        <TableCell className="flex items-center gap-2">
-                          <Action content="students" id={stundent.id} data={stundent}/>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            )}
-          </>
-        )}
-      </div>
+
+          <div className="mt-10 flex justify-evenly items-center">
+            {ClassList.map((item) => (
+              <Link href={`${item.link}`}>
+                <div className="w-44 h-32 px-3 py-4 rounded-xl bg-primary shadow-2xl flex justify-center items-center hover:bg-fourth transition-all cursor-pointer">
+                  <h1 className="text-white font-bold text-5xl">
+                    {item.jenjang}
+                  </h1>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-16 px-10">
+            <div className="flex items-center gap-2">
+              <FaDatabase size={20} className="text-primary" />
+              <h1 className="font-bold text-primary">Data By Class</h1>
+            </div>
+            <div className="w-[80%] mx-auto">
+              <BarChart
+                data1={class10}
+                data2={class11}
+                data3={class12}
+                title1="10"
+                title2="11"
+                title3="12"
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="px-5">
+          <Header title="Students" />
+          <ListStudents
+            data={dataStudent}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            pageCount={pageCount}
+            isLoading={isLoading}
+            title="All Students"
+          />
+        </div>
+      )}
     </div>
   );
-};
-
-export default Students;
+}

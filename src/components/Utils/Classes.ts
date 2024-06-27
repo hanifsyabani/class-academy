@@ -32,3 +32,10 @@ export const Classes = [
   { id: 20, class: "12 IPS 2" },
   { id: 21, class: "12 IPS 3" },
 ];
+
+
+export const ClassList = [
+  { id: 1, jenjang: "10", link: "/students/class10" },
+  { id: 2, jenjang: "11", link: "/students/class11" },
+  { id: 3, jenjang: "12", link: "/students/class12" },
+];

@@ -4,6 +4,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
+import NextTopLoader from 'nextjs-toploader';
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
       <link rel="icon" href="/logo.svg" />
       <body className={poppins.className}>
         <Providers >
+        <NextTopLoader color="#FF6384" />
           <Sidebar />
           <div className="ml-[20%] w-[80%]">{children}</div>
           <Toaster />

@@ -8,7 +8,8 @@ import { NextResponse } from "next/server";
 const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 12*60 * 60,
+    maxAge: 1 * 60 * 60,
+    updateAge: 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -30,27 +31,46 @@ const authOptions: NextAuthOptions = {
           password: string;
         };
 
-        const users = await prisma.teacher.findFirst({
+        const teacher = await prisma.teacher.findFirst({
           where: { email: email },
         });
 
-        if (!users) {
-          NextResponse.json({ message: "Users not found" });
-          return null;
-        }
+        const student = await prisma.student.findFirst({
+          where: { email: email },
+        });
 
-        const user: any = {
-          id: users.id,
-          name: users.fullName,
-          email: users.email,
-          role: users.role,
+        // if (!teacher || !student) {
+        //   throw new Error("User not found");
+        // }
+
+        const teacherUser: any = {
+          id: teacher?.id,
+          name: teacher?.fullName,
+          email: teacher?.email,
+          role: teacher?.role,
         };
 
-        if (email === users.email && password === users.password) {
-          return user;
-        } else {
-          NextResponse.json({ message: "Invalid email or password" });
-          return null;
+        const studentUser: any = {
+          id: student?.id,
+          name: student?.fullName,
+          email: student?.email,
+          role: student?.role,
+        };
+
+        if (teacher) {
+          if (email === teacher.email && password === teacher.password) {
+            return teacherUser;
+          } else {
+            return null;
+          }
+        }
+
+        if (student) {
+          if (email === student.email && password === student.password) {
+            return studentUser;
+          } else {
+            return null;
+          }
         }
       },
     }),

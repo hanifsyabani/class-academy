@@ -12,5 +12,9 @@ export default withAuth(mainMiddleware, [
   "/teachers",
   "/students",
   "/teachers/formAddTeacher",
+  "/teachers/formEditTeacher",
   "/students/formAddStudent",
+  "/students/class10",
+  "/students/class11",
+  "/students/class12",
 ]);

@@ -7,6 +7,8 @@ const authPaths = [
   '/api/auth/signin/google'
 ];
 
+const onlyAdmin = ['/teachers']
+
 export default function withAuth(middleware: NextMiddleware, requireAuth: string[] = []) {
   return async (req: NextRequest, next: NextFetchEvent) => {
     const pathname = req.nextUrl.pathname;
@@ -25,6 +27,10 @@ export default function withAuth(middleware: NextMiddleware, requireAuth: string
     }
 
     if (token && pathname === '/login') {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+
+    if(token?.role !== 'admin' && onlyAdmin.includes(pathname)) {
       return NextResponse.redirect(new URL('/', req.url));
     }
 

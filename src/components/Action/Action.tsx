@@ -29,6 +29,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Action({
   id,
@@ -39,6 +41,9 @@ export default function Action({
   content: string;
   data: any;
 }) {
+  const router = useRouter();
+
+  const { data: session }: { data: any } = useSession();
   async function handleDelete(id: number) {
     try {
       const res = await fetch(`/api/${content}/${id}`, {
@@ -50,7 +55,7 @@ export default function Action({
           title: "Success",
           description: "Profile deleted successfully",
         });
-        window.location.reload();
+        router.refresh();
       } else {
         toast({
           title: "Error",
@@ -87,22 +92,34 @@ export default function Action({
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
-              <RiEditBoxFill className="w-6 h-6 text-green-500 cursor-pointer" />
+              {content === "teachers" ? (
+                <Link href={`/teachers/formEditTeacher/${id}`}>
+                  <RiEditBoxFill className="w-6 h-6 text-green-500 cursor-pointer" />
+                </Link>
+              ) : (
+                <Link href={`/students/formEditStudent/${id}`}>
+                  <RiEditBoxFill className="w-6 h-6 text-green-500 cursor-pointer" />
+                </Link>
+              )}
             </TooltipTrigger>
             <TooltipContent>
               <p>Edit Profile</p>
             </TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <AlertDialogTrigger>
-                <MdDelete className="w-6 h-6 text-red-500 cursor-pointer" />
-              </AlertDialogTrigger>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Delete</p>
-            </TooltipContent>
-          </Tooltip>
+          {session?.user?.role === "admin" && (
+            <>
+              <Tooltip>
+                <TooltipTrigger>
+                  <AlertDialogTrigger>
+                    <MdDelete className="w-6 h-6 text-red-500 cursor-pointer" />
+                  </AlertDialogTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete</p>
+                </TooltipContent>
+              </Tooltip>
+            </>
+          )}
         </TooltipProvider>
 
         <AlertDialogContent>

@@ -214,6 +214,7 @@ export default function FormAdd({ content }: { content: string }) {
           <div className="w-1/2 mt-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-full">
+                
                 <select
                   name="classes"
                   id="classes"
@@ -221,7 +222,12 @@ export default function FormAdd({ content }: { content: string }) {
                   onChange={handleInput}
                   className="w-full px-2 py-3 outline-none border border-gray-300 rounded-lg"
                 >
+                  {content === "students" ?(
                   <option hidden>Class</option>
+
+                  ):(
+                    <option hidden>Class Teacher</option>
+                  )}
                   {Classes.map((classs) => (
                     <option value={classs.class} key={classs.id}>
                       {classs.class}
