@@ -72,6 +72,7 @@ export default function NumberClass() {
           pageCount={pageCount}
           handlePageChange={handlePageChange}
           title={`List of ${params?.class} students`}
+          link="/students/formAddStudent"
         />
       </div>
     </div>

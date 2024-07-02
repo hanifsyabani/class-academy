@@ -36,6 +36,7 @@ interface ListStudentsProps {
   pageCount: number;
   handlePageChange: ({ selected }: { selected: number }) => void;
   title?: string
+  link?: string
 }
 
 const ListStudents: NextPage<ListStudentsProps> = ({
@@ -44,11 +45,12 @@ const ListStudents: NextPage<ListStudentsProps> = ({
   currentPage,
   pageCount,
   handlePageChange,
-  title
+  title,
+  link
 }) => {
   return (
     <div className="py-4">
-      <SubNav title={`${title}`} link="/" dataset={data} />
+      <SubNav title={`${title}`} link={`${link}`} dataset={data} />
 
       <Search placeholder="Search Students" />
       <div>

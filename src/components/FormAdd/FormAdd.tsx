@@ -20,7 +20,6 @@ export default function FormAdd({ content }: { content: string }) {
     phone: "",
     nik: "",
     password: "",
-    role: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -63,8 +62,7 @@ export default function FormAdd({ content }: { content: string }) {
           nik: "",
           classes: "",
           phone: "",
-          password: "",
-          role: "",
+          password: ""
         });
 
         router.push(`/${content}`);
@@ -266,22 +264,6 @@ export default function FormAdd({ content }: { content: string }) {
                 className="w-full px-2 py-3 border border-gray-300 rounded-lg outline-none"
               />
             </div>
-            {content === "teachers" && (
-              <div className="mb-4">
-                <select
-                  name="role"
-                  id="role"
-                  onChange={handleInput}
-                  value={values.role}
-                  className="w-full px-2 py-3 outline-none border border-gray-300 rounded-lg"
-                >
-                  <option hidden>Role</option>
-                  <option value="admin">Admin</option>
-                  <option value="teachers">Teacher</option>
-                  <option value="students">Student</option>
-                </select>
-              </div>
-            )}
           </div>
         </div>
       </form>

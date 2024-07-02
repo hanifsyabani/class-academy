@@ -18,7 +18,8 @@ export async function POST(req:  Request){
         phone,
         password,
         nik,
-        class: classes
+        class: classes,
+        role: 'students'
       }
     })
 

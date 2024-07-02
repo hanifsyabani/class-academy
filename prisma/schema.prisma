@@ -45,3 +45,16 @@ model Student {
   teacherId Int?
   teacher Teacher? @relation(fields: [teacherId], references: [id])
 }
+
+
+model Event{
+  id Int @id @default(autoincrement())
+  title String
+  img String
+  time String
+  category String
+  status String?
+
+  createdAt DateTime @default(now()) @map("createdAt")
+  updateAt DateTime @default(now()) 
+}

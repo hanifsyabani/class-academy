@@ -39,9 +39,6 @@ const authOptions: NextAuthOptions = {
           where: { email: email },
         });
 
-        // if (!teacher || !student) {
-        //   throw new Error("User not found");
-        // }
 
         const teacherUser: any = {
           id: teacher?.id,

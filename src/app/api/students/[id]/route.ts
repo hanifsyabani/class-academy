@@ -42,3 +42,39 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     }
   }
 }
+
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+
+  try {
+    const {id} = params;
+
+    const { Designation, fullName, email, gender, nik, classes, phone, password} = await req.json();
+
+    const student = await prisma.student.update({
+      where:{
+        id: Number(id)
+      },
+      data:{
+        Designation,
+        fullName,
+        email,
+        gender,
+        phone,
+        password,
+        nik,
+        class: classes
+      }
+    });
+
+    if(!student) return NextResponse.json({message:"Failed to update", status: 404});
+
+    return NextResponse.json({status: 200})
+  } catch (error) {
+    if(error instanceof Error){
+      return new Response(error.message, {status: 500})
+    }
+  }
+}

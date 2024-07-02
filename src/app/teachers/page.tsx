@@ -41,6 +41,7 @@ const Teachers: NextPage = () => {
   const itemsPerPage = 10;
   const [isLoading, setIsLoading] = useState(false);
 
+
   useEffect(() => {
     async function getTeachers() {
       setIsLoading(true);
@@ -70,6 +71,7 @@ const Teachers: NextPage = () => {
 
   return (
     <div className="px-6 py-4">
+     
       <Header title="List of Teachers" />
 
       <div>

@@ -78,59 +78,68 @@ export default function Students() {
   const class12 = dataClass.class12 ? dataClass.class12.length : null;
 
   return (
-    <div className=" py-5">
-      {session?.user?.role === "admin" ? (
-        <>
-          <div className="flex justify-between items-center px-5">
-            <div className="flex items-center gap-2">
-              <PiStudentFill size={20} className="text-primary" />
-              <h1 className="font-bold text-primary">Select Classes</h1>
-            </div>
-            <ButtonsNavbar />
-          </div>
-
-          <div className="mt-10 flex justify-evenly items-center">
-            {ClassList.map((item) => (
-              <Link href={`${item.link}`}>
-                <div className="w-44 h-32 px-3 py-4 rounded-xl bg-primary shadow-2xl flex justify-center items-center hover:bg-fourth transition-all cursor-pointer">
-                  <h1 className="text-white font-bold text-5xl">
-                    {item.jenjang}
-                  </h1>
+    <>
+      {session?.user?.role === "students" ? (
+        <div className="h-screen w-full flex justify-center items-center">
+          <h1 className="text-6xl">Access Denied</h1>
+        </div>
+      ) : (
+        <div className=" py-5">
+          {session?.user?.role === "admin" ? (
+            <>
+              <div className="flex justify-between items-center px-5">
+                <div className="flex items-center gap-2">
+                  <PiStudentFill size={20} className="text-primary" />
+                  <h1 className="font-bold text-primary">Select Classes</h1>
                 </div>
-              </Link>
-            ))}
-          </div>
+                <ButtonsNavbar />
+              </div>
 
-          <div className="mt-16 px-10">
-            <div className="flex items-center gap-2">
-              <FaDatabase size={20} className="text-primary" />
-              <h1 className="font-bold text-primary">Data By Class</h1>
-            </div>
-            <div className="w-[80%] mx-auto">
-              <BarChart
-                data1={class10}
-                data2={class11}
-                data3={class12}
-                title1="10"
-                title2="11"
-                title3="12"
+              <div className="mt-10 flex justify-evenly items-center">
+                {ClassList.map((item) => (
+                  <Link href={`${item.link}`}>
+                    <div className="w-44 h-32 px-3 py-4 rounded-xl bg-primary shadow-2xl flex justify-center items-center hover:bg-fourth transition-all cursor-pointer">
+                      <h1 className="text-white font-bold text-5xl">
+                        {item.jenjang}
+                      </h1>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-16 px-10">
+                <div className="flex items-center gap-2">
+                  <FaDatabase size={20} className="text-primary" />
+                  <h1 className="font-bold text-primary">Data By Class</h1>
+                </div>
+                <div className="w-[80%] mx-auto">
+                  <BarChart
+                    data1={class10}
+                    data2={class11}
+                    data3={class12}
+                    title1="10"
+                    title2="11"
+                    title3="12"
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="px-5">
+              <Header title="Students" />
+              <ListStudents
+                data={dataStudent}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+                pageCount={pageCount}
+                isLoading={isLoading}
+                title="All Students"
+                link="/students/formAddStudent"
               />
             </div>
-          </div>
-        </>
-      ) : (
-        <div className="px-5">
-          <Header title="Students" />
-          <ListStudents
-            data={dataStudent}
-            handlePageChange={handlePageChange}
-            currentPage={currentPage}
-            pageCount={pageCount}
-            isLoading={isLoading}
-            title="All Students"
-          />
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 }

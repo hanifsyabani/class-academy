@@ -5,7 +5,7 @@ import { Subjects } from "@/components/Teacher/Subject";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, ClipLoader } from "react-spinners";
 import { Classes } from "../Utils/Classes";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
@@ -65,7 +65,7 @@ export default function FormEdit({
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/${content}`, {
+      const res = await fetch(`/api/${content}/${id}`, {
         method: "PUT",
         body: JSON.stringify(values),
         headers: {
@@ -76,7 +76,7 @@ export default function FormEdit({
       if (res.ok) {
         toast({
           title: "Success",
-          description: "Teacher added successfully",
+          description: "Teacher Update successfully",
         });
 
         router.back();
@@ -212,16 +212,20 @@ export default function FormEdit({
             )}
 
             {hasChange && (
-              <div className="flex justify-center gap-2 bg-secondary text-white px-4 py-2 border border-secondary hover:bg-white hover:text-secondary transition-all rounded-xl w-32">
-                <FaRegSave size={20} />
-                <button type="submit" disabled={isLoading}>
-                  {isLoading ? (
-                    <BeatLoader color="#152259" size={5} />
-                  ) : (
+              <button
+                className="flex justify-center gap-2 bg-secondary text-white px-4 py-2 border border-secondary hover:bg-white hover:text-secondary transition-all rounded-xl w-32 cursor-pointer"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ClipLoader size={20} color="#509CDB" />
+                ) : (
+                  <>
+                    <FaRegSave size={20} />
                     <p>Save</p>
-                  )}
-                </button>
-              </div>
+                  </>
+                )}
+              </button>
             )}
           </div>
           <div className="w-1/2 mt-6">

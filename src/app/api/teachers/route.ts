@@ -3,7 +3,7 @@ import {  NextResponse } from "next/server";
 
 export async function POST(req:  Request){
   try {
-    const {Designation, fullName, email, gender, subject, classes, phone, password,role} = await req.json();
+    const {Designation, fullName, email, gender, subject, classes, phone, password} = await req.json();
 
     if(!Designation || !fullName || !email || !gender || !subject || !classes){
       return new Response("Missing fields", {status: 400})
@@ -19,7 +19,7 @@ export async function POST(req:  Request){
         password,
         subject,
         class: classes,
-        role
+        role: "teachers"
       }
     })
 

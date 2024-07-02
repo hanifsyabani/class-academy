@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "Event" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "img" TEXT NOT NULL,
+    "time" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
+);
