@@ -39,6 +39,7 @@ export async function POST(req: Request) {
         img: imageUrl,
         category,
         time,
+        status: 'ongoing'
       },
     });
 
@@ -56,10 +57,25 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const event = await prisma.event.findMany();
+    const event = await prisma.event.findMany({
+      where:{
+        status:'ongoing'
+      }
+    });
+    const pastEvent = await prisma.event.findMany({
+      where:{
+        status:'done'
+      }
+    })
+
     if (!event) throw new Error(`Could not find event`);
 
-    return NextResponse.json(event, { status: 200 });
+    const data ={
+      event,
+      pastEvent
+    }
+
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
       return new Response(error.message, { status: 500 });

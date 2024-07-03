@@ -9,14 +9,14 @@ export default function CardEvent({ data }: any) {
   const { data: session }: { data: any } = useSession();
 
   return (
-    <div className="w-44 cursor-pointer">
+    <div className="w-44 h-full cursor-pointer group">
       <Link href={`/events/${data.id}`}>
         <Image
           src={data.img}
           alt="eventimage"
           width={350}
           height={350}
-          className="w-32 h-32 rounded-full mx-auto"
+          className="w-32 h-32 rounded-full mx-auto group-hover:scale-110 shadow-lg transition-all"
         />
         <div className="text-center mt-5">
           <p className="text-sm">{data.date}</p>

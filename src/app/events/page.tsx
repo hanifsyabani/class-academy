@@ -8,6 +8,7 @@ import CardEvent from "@/components/Events/CardEvent";
 import { useSession } from "next-auth/react";
 import CardAddEvent from "@/components/Events/CardAddEvent";
 import Link from "next/link";
+import { HashLoader } from "react-spinners";
 
 interface Event {
   id: number;
@@ -21,6 +22,8 @@ interface CardAddEvents {
   title: string;
   category: string;
   img: string;
+  date: string;
+  status: string;
 }
 
 const events: Event[] = [
@@ -48,22 +51,20 @@ export default function Events() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const { data: session }: { data: any } = useSession();
-
-  const handleDateChange = (date: any) => {
-    setSelectedDate(date);
-    const formattedDate = format(date, "yyyy-MM-dd");
-    const filtered = events.filter((event) => event.date === formattedDate);
-    setFilteredEvents(filtered);
-  };
+  const [pastEvent, setPastEvent] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [event, setEvent] = useState<CardAddEvents[]>([]);
 
   useEffect(() => {
+    setIsLoading(true);
     async function getEventsData() {
       const res = await fetch("/api/events");
       const data = await res.json();
-      setEvent(data);
+      setEvent(data.event);
+      setPastEvent(data.pastEvent);
     }
+    setIsLoading(false);
 
     getEventsData();
   }, []);
@@ -76,64 +77,35 @@ export default function Events() {
             Upcoming Events
           </h1>
           <div className="grid lg:grid-cols-3 mt-10 gap-10">
-            {event.map((event: any) => (
-              <CardEvent data={event} />
-            ))}
-            {session?.user?.role === "admin" && <CardAddEvent />}
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <HashLoader size={50} color="#509CDB" />
+              </div>
+            ) : (
+              <>
+                {event.map((event: any) => (
+                  <CardEvent data={event} />
+                ))}
+                {session?.user?.role === "admin" && <CardAddEvent />}
+              </>
+            )}
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-20">
           <h1 className="text-4xl font-bold mb-6 text-center text-primary">
             Past Events
           </h1>
           <div className="grid lg:grid-cols-3 mt-10">
-            {event.map((event: any) => (
+            {pastEvent.map((event: any) => (
               <CardEvent data={event} key={event.id} />
             ))}
           </div>
         </div>
       </div>
-      <div className="">
-        <div className="mb-10">
-          <Calendar
-            onChange={handleDateChange}
-            value={selectedDate}
-            className="bg-white p-4 rounded-lg shadow"
-            tileClassName={({ date, view }) => {
-              const eventDates = events.map((event) => event.date);
-              if (eventDates.includes(format(date, "yyyy-MM-dd"))) {
-                return "highlight";
-              }
-              return "";
-            }}
-          />
-        </div>
-        <div>
-          {filteredEvents.length === 0 ? (
-            <div>
-              <h1>Add event</h1>
-            </div>
-          ) : (
-            <ul className="space-y-4">
-              {filteredEvents.map((event) => (
-                <li
-                  key={event.id}
-                  className="p-4 border rounded-lg shadow"
-                  style={{ borderColor: "#509CDB" }}
-                >
-                  <h2
-                    className="text-2xl font-semibold"
-                    style={{ color: "#152259" }}
-                  >
-                    {event.title}
-                  </h2>
-                  <p className="text-gray-700">{event.description}</p>
-                  <p className="text-gray-500">Date: {event.date}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+      <div className="fixed w-[20%] right-0 bg-white">
+        <h1 className="text-2xl font-bold text-primary text-center">
+          Our <span className="text-fourth">Partner</span>
+        </h1>
       </div>
     </div>
   );

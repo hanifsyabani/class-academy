@@ -28,7 +28,7 @@ export default function RootLayout({
         <Providers >
         <NextTopLoader color="#FF6384" />
           <Sidebar />
-          <div className="ml-[20%] w-[80%]">{children}</div>
+          <div className="ml-[20%] w-[80%] bg-[#F8F9FA]">{children}</div>
           <Toaster />
         </Providers>
       </body>

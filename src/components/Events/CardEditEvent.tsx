@@ -22,6 +22,7 @@ interface Events {
   category: string;
   img: string;
   time: string;
+  status : string
 }
 
 export default function CardEditEvent({ id }: { id: number }) {
@@ -29,7 +30,7 @@ export default function CardEditEvent({ id }: { id: number }) {
   const [title, setTitle] = useState("");
   const [categoryEvent, setCategoryEvent] = useState("");
   const [timeEvent, setTimeEvent] = useState("");
-
+  const [status, setStatus] = useState(""); 
   const [eventData, setEventData] = useState({} as Events);
 
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,10 @@ export default function CardEditEvent({ id }: { id: number }) {
         const res = await fetch(`/api/events/${id}`);
         const data = await res.json();
         setEventData(data);
+        setTitle(data.title);
+        setCategoryEvent(data.category);
+        setTimeEvent(data.time);
+        setStatus(data.status);
       } catch (error) {
         toast({
           title: "Error",
@@ -53,9 +58,9 @@ export default function CardEditEvent({ id }: { id: number }) {
     }
 
     getEventData();
-  }, []);
+  }, [id]);
 
-  async function handleAddEvent(e: ChangeEvent<HTMLFormElement>) {
+  async function handleEditEvent(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     try {
@@ -64,6 +69,7 @@ export default function CardEditEvent({ id }: { id: number }) {
       data.append("title", title);
       data.append("categoryEvent", categoryEvent);
       data.append("timeEvent", timeEvent);
+      data.append("status", status);
 
       const res = await fetch(`/api/events/${id}`, {
         body: data,
@@ -96,20 +102,19 @@ export default function CardEditEvent({ id }: { id: number }) {
     <>
       <Drawer>
         <DrawerTrigger>
-          <button className="flex items-center gap-2 justify-center bg-primary px-3 py-2 rounded-xl mt-3 hover:bg-secondary transition-all mx-auto w-52">
+          <button className="flex items-center gap-2 justify-center bg-primary px-3 py-2 rounded-xl mt-3 hover:bg-secondary transition-all mx-auto w-44">
             <FaRegEdit size={20} className="text-white" />
-
             <p className="text-white text-sm">Edit Event</p>
           </button>
         </DrawerTrigger>
 
         <DrawerContent className="h-full w-1/2 mx-auto px-5">
-          <form onSubmit={handleAddEvent}>
+          <form onSubmit={handleEditEvent}>
             <div className="mb-8">
               {eventData.img ? (
                 <div className="mt-7 flex justify-center">
                   <Image
-                    src={eventData.img}
+                    src={eventData?.img}
                     alt="image"
                     width={300}
                     height={300}
@@ -161,7 +166,7 @@ export default function CardEditEvent({ id }: { id: number }) {
               <select
                 name="category"
                 id="category"
-                value={eventData.category}
+                value={categoryEvent}
                 className="w-full outline-none px-2 py-3 border border-primary rounded-xl"
                 onChange={(e) => setCategoryEvent(e.target.value)}
               >
@@ -185,7 +190,7 @@ export default function CardEditEvent({ id }: { id: number }) {
                 placeholder="Name Event"
                 name="name"
                 id="name"
-                value={eventData.title}
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className=" w-full outline-none px-2 py-3 border border-primary rounded-md"
               />
@@ -202,7 +207,7 @@ export default function CardEditEvent({ id }: { id: number }) {
                   type="date"
                   name="time"
                   id="time"
-                  value={eventData.time}
+                  value={timeEvent}
                   onChange={(e) => setTimeEvent(e.target.value)}
                   className=" w-full outline-none px-2 py-3 border border-primary rounded-md"
                 />
@@ -216,15 +221,14 @@ export default function CardEditEvent({ id }: { id: number }) {
                 </label>
                 <select
                   name="status"
-                  id="category"
-                  // value={eventData.category}
+                  id="status"
+                  value={status}
                   className="w-full outline-none px-2 py-3 border border-primary rounded-xl"
-                  onChange={(e) => setCategoryEvent(e.target.value)}
+                  onChange={(e) => setStatus(e.target.value)}
                 >
                   <option hidden>Status</option>
-                  <option value="speaker">On Going</option>
-                  <option value="workshop">Done</option>
-                  <option value="info">Cancelled</option>
+                  <option value="ongoing">On Going</option>
+                  <option value="done">Done</option>
                 </select>
               </div>
             </div>
