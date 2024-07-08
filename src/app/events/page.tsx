@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { format } from "date-fns";
 import CardEvent from "@/components/Events/CardEvent";
 import { useSession } from "next-auth/react";
 import CardAddEvent from "@/components/Events/CardAddEvent";
-import Link from "next/link";
 import { HashLoader } from "react-spinners";
+import Image from "next/image";
+import sponsor1 from "@/assets/MASTER.png";
+import sponsor2 from "@/assets/KemendibudLogo.png";
+import sponsor3 from "@/assets/BeasiswaJakarta.png";
 
 interface Event {
   id: number;
@@ -26,30 +27,7 @@ interface CardAddEvents {
   status: string;
 }
 
-const events: Event[] = [
-  {
-    id: 1,
-    title: "Math Workshop",
-    description: "A workshop on advanced math topics",
-    date: "2024-07-15",
-  },
-  {
-    id: 2,
-    title: "Science Fair",
-    description: "Annual science fair with student projects",
-    date: "2024-07-20",
-  },
-  {
-    id: 3,
-    title: "History Seminar",
-    description: "Seminar on World War II",
-    date: "2024-08-05",
-  },
-];
-
 export default function Events() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const { data: session }: { data: any } = useSession();
   const [pastEvent, setPastEvent] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,14 +35,14 @@ export default function Events() {
   const [event, setEvent] = useState<CardAddEvents[]>([]);
 
   useEffect(() => {
-    setIsLoading(true);
     async function getEventsData() {
+      setIsLoading(true);
       const res = await fetch("/api/events");
       const data = await res.json();
       setEvent(data.event);
       setPastEvent(data.pastEvent);
+      setIsLoading(false);
     }
-    setIsLoading(false);
 
     getEventsData();
   }, []);
@@ -102,10 +80,40 @@ export default function Events() {
           </div>
         </div>
       </div>
-      <div className="fixed w-[20%] right-0 bg-white">
+      <div className="fixed w-[20%] right-0 bg-[#F8F9FA]">
         <h1 className="text-2xl font-bold text-primary text-center">
           Our <span className="text-fourth">Partner</span>
         </h1>
+
+        <div className="flex items-center flex-wrap justify-center gap-4 mt-6">
+          <div className="w-20">
+            <Image
+              src={sponsor1}
+              alt="sponsor"
+              width={100}
+              height={100}
+              className="w-full"
+            />
+          </div>
+          <div className="w-20 ">
+            <Image
+              src={sponsor2}
+              alt="sponsor"
+              width={100}
+              height={100}
+              className="w-full  "
+            />
+          </div>
+          <div className="w-20 ">
+            <Image
+              src={sponsor3}
+              alt="sponsor"
+              width={100}
+              height={100}
+              className="w-full  "
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

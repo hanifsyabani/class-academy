@@ -12,7 +12,7 @@ export async function DELETE(req :Request, {params} : {params: {id: string}}) {
     })
 
     if(!student){
-      return NextResponse.json({message:"Student not found", status: 404})
+      return new Response(JSON.stringify({ message: "Student not found" }), { status: 404 });
     }
 
     return NextResponse.json({message: "Student deleted", status: 200})

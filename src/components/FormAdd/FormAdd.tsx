@@ -46,31 +46,19 @@ export default function FormAdd({ content }: { content: string }) {
         },
       });
 
+      const data = await res.json();
+
       if (res.ok) {
         toast({
-          color: "green",
           title: "Success",
           description: "Teacher added successfully",
-        });
-
-        setValues({
-          Designation: "",
-          fullName: "",
-          email: "",
-          gender: "",
-          subject: "",
-          nik: "",
-          classes: "",
-          phone: "",
-          password: ""
         });
 
         router.push(`/${content}`);
       } else {
         toast({
-          color: "red",
           title: "Error",
-          description: "Something went wrong",
+          description: data.message || "Something went wrong",
         });
       }
     } catch (error) {

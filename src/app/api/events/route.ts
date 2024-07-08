@@ -9,6 +9,10 @@ export async function POST(req: Request) {
     const image = data.get("image") as File;
     const title = data.get("title") as string;
     const time = data.get("timeEvent") as string;
+    const description = data.get("description") as string;
+    const about = data.get("about") as string;
+    const key1 = data.get("key1") as string;
+    const key2 = data.get("key2") as string;
     const category = data.get("categoryEvent") as string;
 
     let imageUrl = null;
@@ -39,7 +43,10 @@ export async function POST(req: Request) {
         img: imageUrl,
         category,
         time,
-        status: 'ongoing'
+        status: 'ongoing',
+        about,
+        description,
+        keyEvent: [key1, key2],
       },
     });
 

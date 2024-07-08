@@ -54,7 +54,28 @@ model Event{
   time String
   category String
   status String?
+  about String
+  description String
+  keyEvent String[]
+  speaker Speaker[]
+  faciliator Faciliator[]
 
   createdAt DateTime @default(now()) @map("createdAt")
   updateAt DateTime @default(now()) 
+}
+
+model Speaker{
+  id Int @id @default(autoincrement())
+  name String
+  position String
+  eventID Int?
+  event Event? @relation(fields: [eventID], references: [id])
+}
+
+model Faciliator{
+  id Int @id @default(autoincrement())
+  name String
+  position String
+  eventID Int?
+  event Event? @relation(fields: [eventID], references: [id])
 }
