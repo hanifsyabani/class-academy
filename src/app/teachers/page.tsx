@@ -53,7 +53,6 @@ const Teachers: NextPage = () => {
         toast({
           title: "Error",
           description: "Something went wrong",
-          color: "red",
         });
       }
 

@@ -25,8 +25,7 @@ export default function Sidebar() {
         return <PiStudentBold size={25} />;
       case 4:
         return <FaRegCalendarAlt size={25} />;
-      case 5:
-        return <PiExam size={25} />;
+
       case 6:
         return <IoSettingsOutline size={25} />;
       default:

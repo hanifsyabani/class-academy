@@ -19,11 +19,12 @@ interface Event {
   img: string;
   description: string;
   about: string;
-  keyEvent: string;
+  keyEvent: [];
 }
 
 export default function EventsById() {
   const [event, setEvent] = useState({} as Event);
+  const [aboutText, setAboutText] = useState("");
 
   const params = useParams();
 
@@ -36,12 +37,12 @@ export default function EventsById() {
     }
 
     getEventid();
-  }, [params.id]);
 
-  const getText = (selectedText: any) => {
-    const doc = new DOMParser().parseFromString(selectedText, "text/html");
-    return doc.body.textContent;
-  };
+    if (event.about) {
+      const doc = new DOMParser().parseFromString(event.about, "text/html");
+      setAboutText(doc.body.textContent || "");
+    }
+  }, [params.id, event.about]);
 
   return (
     <div className="px-[5%] py-7">
@@ -79,13 +80,20 @@ export default function EventsById() {
       <div className="flex gap-10 mt-10">
         <div className="w-[20%]">
           <h1 className="text-xl font-semibold mb-4 ">Key events</h1>
-          <div className="border border-black text-center w-32 px-8 rounded-full py-2">
-            <p>{event.keyEvent}</p>
+          <div className="flex flex-wrap gap-4 items-center">
+            {event.keyEvent?.map((key) => (
+              <div
+                className="border border-black text-center w-32 px-8 rounded-full py-2"
+                key={key}
+              >
+                <p>{key}</p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="w-[80%]">
           <h1 className="text-xl font-semibold mb-4 ">About this events</h1>
-          <p>{getText(event.about)}</p>
+          <p>{aboutText}</p>
         </div>
       </div>
     </div>

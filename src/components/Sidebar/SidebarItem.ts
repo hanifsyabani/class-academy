@@ -19,11 +19,7 @@ export const SidebarItem =[
     title: 'Events',
     link: '/events'  
   },
-  {
-    id:5,
-    title: 'Exam',  
-    link: '/exams'
-  },
+
   {
     id:6,
     title: 'Settings/profile',  
